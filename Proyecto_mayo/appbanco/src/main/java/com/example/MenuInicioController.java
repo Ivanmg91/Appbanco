@@ -129,7 +129,7 @@ public class MenuInicioController {
 
     @FXML
     void GithubBotonController(ActionEvent event) {
-        String url = "https://github.com/Ivanmg91/Carpeta_programacion/tree/main/JavaFX/Proyecto_mayo";
+        String url = "https://github.com/Ivanmg91/Appbanco/tree/main/Proyecto_mayo";
         try {
             new ProcessBuilder("x-www-browser", url).start();
         } catch (IOException e) {
@@ -164,6 +164,9 @@ public class MenuInicioController {
             System.out.println(e.getMessage());
         }
 
+        /*
+         * Poner las imagenes
+         */
         Image logo = new Image("file:/home/dam/Escritorio/Ivanmg/Carpeta_programacion/JavaFX/Proyecto_mayo/appbanco/src/main/resources/imagenes/tarjeta-removebg-preview.png"); // Reemplaza con la ruta de tu imagen
         imagen.setImage(logo); //CAMBIAR LOGO
 
@@ -172,6 +175,9 @@ public class MenuInicioController {
         imageView.setFitWidth(20); // ancho
         imageView.setFitHeight(20); // Alto
         verContrasenaBoton.setGraphic(imageView);
+
+        Image github = new Image("file:/home/dam/Escritorio/Ivanmg/Carpeta_programacion/JavaFX/Proyecto_mayo/appbanco/src/main/resources/imagenes/logogit.png");
+        imagenGithubLogo.setImage(github);
 
         //Mostrara al iniciar el textfield y no el passwordfield
         escribirContrasenaText.setVisible(false);
