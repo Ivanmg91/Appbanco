@@ -17,7 +17,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("menuinicio"), 600, 562);
+        scene = new Scene(loadFXML("menuinicio"), 709, 563);
         stage.setScene(scene);
         stage.show();
     }
@@ -34,5 +34,14 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+
+    /*
+     * COSAS POR HACER/CAMBIAR
+     * El modo escuro q se haga bien con los colores y tal
+     * Crear pantalla transferencias y q cargue las transferencias del clienteoperanco
+     * Crear pantalla tarjetas
+     * Crear pantalla facturas
+     */
 
 }

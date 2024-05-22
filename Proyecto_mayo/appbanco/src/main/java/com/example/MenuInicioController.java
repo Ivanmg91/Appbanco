@@ -1,11 +1,11 @@
 package com.example;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.TreeMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -74,6 +74,7 @@ public class MenuInicioController {
         
     }
 
+
     @FXML
     void IniciarSesionController(ActionEvent event) throws IOException {
         String nif = escribirNif.getText();
@@ -85,9 +86,16 @@ public class MenuInicioController {
          */
         if (nif_contrasenas.containsKey(nif)) { //Si el NIF existe
 
-            System.out.println("Inicio de sesión correcto");
             if (nif_contrasenas.get(nif).equals(contrasena)) { //Si el la contraseña coincide con el nif
-                App.setRoot("menuoperaciones");
+                System.out.println("Inicio de sesión correcto");
+
+                /*
+                 * Guardar las cosas del cliente q va a operar
+                 */
+                clienteOperando.setNif(escribirNif.getText());
+                clienteOperando.setContrasena(escribirContrasena.getText());
+                
+                App.setRoot("menuoperacionescliente");
 
             } else if (!nif_contrasenas.get(nif).equals(contrasena) && !contrasena.equals("")) { //Si la contraseña no coincide
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -125,6 +133,12 @@ public class MenuInicioController {
             alert.setContentText("Debes completar los campos para iniciar sesión");
             alert.showAndWait();
         }
+
+        try (FileWriter writer = new FileWriter("lastPassword.txt")) {
+            writer.write(escribirContrasena.getText());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -137,14 +151,11 @@ public class MenuInicioController {
         }
     }
 
-    static ArrayList<Cliente> lista_clientes = new ArrayList<Cliente>();
-
-    TreeMap<String, String> nif_contrasenas = new TreeMap<>(); //Treemap de cada NIF y su contraseña
-    /*TreeMap<String, String> nif_clientes = new TreeMap<>(); //Para los nombres
-    TreeMap<String, String> nif_apellidos = new TreeMap<>(); //Para los clientes
-    TreeMap<String, Double> nif_facturas = new TreeMap<>(); //Para las facturas*/
-
-
+    //static ArrayList<Cliente> lista_clientes = new ArrayList<Cliente>();
+    static TreeMap<String, String> nif_contrasenas = new TreeMap<>(); //Treemap de cada NIF y su contraseña
+    static TreeMap<String, String> nif_nombres = new TreeMap<>(); //Treemap de cada NIF y su nombre
+    static ClienteOperando clienteOperando = new ClienteOperando(null, null, null, null);
+    
     @FXML
     void initialize() {
         try {
@@ -153,12 +164,12 @@ public class MenuInicioController {
             ResultSet rs = st.executeQuery("SELECT * FROM clientes");
 
             while (rs.next()) { // Añadir todos los clientes a un arraylist
-                Cliente cliente =new Cliente(rs.getString("NIF"), rs.getString("contrasena"), rs.getString("nombre"), rs.getString("apellidos"));
-                lista_clientes.add(cliente);
+                /*Cliente cliente =new Cliente(rs.getString("NIF"), rs.getString("contrasena"), rs.getString("nombre"), rs.getString("apellidos"));
+                lista_clientes.add(cliente);*/
 
                 nif_contrasenas.put(rs.getString("NIF"), rs.getString("contrasena")); // Añadir todos los NIF y contraseñas a un TreeMap
-                /*nif_clientes.put(rs.getString("NIF"), rs.getString("nombre")); // Añadir todos los NIF y clientes a un TreeMap
-                nif_apellidos.put(rs.getString("NIF"), rs.getString("apellidos")); // Añadir todos los NIF y apellidos a un TreeMap*/
+                nif_nombres.put(rs.getString("NIF"), rs.getString("nombre")); // Añadir todos los NIF y nombres a un TreeMap
+
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
